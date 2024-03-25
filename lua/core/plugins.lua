@@ -70,4 +70,8 @@ require("lazy").setup({
 		event = "VimEnter",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
+	{
+		"L3MON4D3/LuaSnip",
+		version = "v2.*",
+	},
 })
