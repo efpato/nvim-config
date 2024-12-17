@@ -30,6 +30,8 @@ lspconfig.ruff_lsp.setup({
 	capabilities = capabilities,
 })
 
+lspconfig.gopls.setup({})
+
 lspconfig.rust_analyzer.setup({
 	settings = {
 		["rust-analyzer"] = {
