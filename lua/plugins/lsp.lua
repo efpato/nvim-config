@@ -21,7 +21,7 @@ lspconfig.pyright.setup({
 	capabilities = capabilities,
 })
 
-lspconfig.ruff_lsp.setup({
+lspconfig.ruff.setup({
 	settings = {
 		ruff = {
 			path = vim.fn.exepath(".venv/bin/ruff") or "ruff",
