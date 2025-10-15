@@ -1,50 +1,73 @@
-local lspconfig = require("lspconfig")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-lspconfig.pyright.setup({
-	handlers = {
-		["textDocument/publishDiagnostics"] = function() end,
-	},
+vim.lsp.enable("pyright")
+vim.lsp.config("pyright", {
+	before_init = function(_, config)
+		config.settings.python.pythonPath = vim.fn.exepath(".venv/bin/python") or "python"
+	end,
 	settings = {
 		pyright = {
+			-- Using Ruff's import organizer
 			disableOrganizeImports = true,
 		},
 		python = {
 			analysis = {
-				autoSearchPaths = true,
-				typeCheckingMode = "off",
-				useLibraryCodeForTypes = true,
-			},
-			pythonPath = vim.fn.exepath(".venv/bin/python") or "python",
-		},
-	},
-	capabilities = capabilities,
-})
-
-lspconfig.ruff.setup({
-	settings = {
-		ruff = {
-			path = vim.fn.exepath(".venv/bin/ruff") or "ruff",
-		},
-	},
-	capabilities = capabilities,
-})
-
-lspconfig.gopls.setup({})
-
-lspconfig.rust_analyzer.setup({
-	settings = {
-		["rust-analyzer"] = {
-			diagnostics = {
-				enable = true,
-				experimental = {
-					enable = true,
-				},
+				-- Ignore all files for analysis to exclusively use Ruff for linting
+				ignore = { "*" },
 			},
 		},
 	},
-	capabilities = capabilities,
 })
+
+vim.lsp.config("ruff", {
+	init_options = {
+		settings = {
+			configurationPreference = "filesystemFirst",
+		},
+	},
+})
+vim.lsp.enable("ruff")
+
+vim.lsp.config("jsonls", {
+	init_options = {
+		settings = {
+			json = {
+				format = { enable = true },
+				validate = { enable = true },
+				-- schemas = require("schemastore").json.schemas(),
+			},
+		},
+	},
+})
+vim.lsp.enable("jsonls")
+
+vim.lsp.enable("helm_ls")
+
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("lsp_attach_disable_ruff_hover", { clear = true }),
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client == nil then
+			return
+		end
+		if client.name == "ruff" then
+			-- Disable hover in favor of Pyright
+			client.server_capabilities.hoverProvider = false
+		end
+	end,
+	desc = "LSP: Disable hover capability from Ruff",
+})
+
+vim.lsp.config("gopls", {
+	settings = {
+		gopls = {
+			analyses = {
+				unusedparams = true,
+			},
+			staticcheck = true,
+			gofumpt = true,
+		},
+	},
+})
+vim.lsp.enable("gopls")
 
 vim.diagnostic.config({
 	virtual_text = true,

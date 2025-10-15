@@ -20,7 +20,6 @@ require("lazy").setup({
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons",
 			"MunifTanjim/nui.nvim",
-			"3rd/image.nvim",
 		},
 	},
 	{ "nvim-treesitter/nvim-treesitter" },
@@ -38,7 +37,7 @@ require("lazy").setup({
 		branch = "0.1.x",
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-	{ "jose-elias-alvarez/null-ls.nvim" },
+	{ "nvimtools/none-ls.nvim" },
 	{ "windwp/nvim-autopairs" },
 	{
 		"akinsho/bufferline.nvim",
