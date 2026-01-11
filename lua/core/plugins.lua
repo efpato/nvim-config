@@ -82,4 +82,5 @@ require("lazy").setup({
 			require("window-picker").setup()
 		end,
 	},
+	{ "mattn/vim-gotmpl" },
 })

@@ -55,3 +55,11 @@ vim.opt.foldmethod = "indent"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.api.nvim_create_autocmd({ "BufReadPost", "FileReadPost" }, { pattern = "*", command = "normal zR" })
 vim.api.nvim_create_autocmd("FileType", { pattern = "Dashboard", command = [[setlocal nofoldenable]] })
+
+-- gotmpl
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "*.gotmpl", "*.go.tmpl", "*.tmpl" },
+	callback = function()
+		vim.opt_local.filetype = "gotexttmpl"
+	end,
+})
